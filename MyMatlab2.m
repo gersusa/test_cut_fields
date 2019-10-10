@@ -27,18 +27,16 @@ order_save = mpcOPF_or.order.bus.e2i; % busses w/ fixed shunts
 
 %%
 if ~isempty(pfs)
-    for i=1:length(pfs)
+    for i=1:numel(pfs)
 
-        pfs(i).order.bus.e2i= order_save;
-        pfs(i).indexMap=mpcOPF.indexMap;
-        pfs(i).comp=mpcOPF_or.comp;
-        pfs(i).bus=[pfs(i).bus mpcOPF_or.bus(:,PD) mpcOPF_or.bus(:,QD)];    %BE CAREFULL WITH THE NEW CONSTANTS INDEX, PD(7) QD(8)
-        pfs(i).gen=[pfs(i).gen mpcOPF_or.gen(:,PMIN) mpcOPF_or.gen(:,PMAX) mpcOPF_or.gen(:,QMIN) mpcOPF_or.gen(:,QMAX)]; %BE CAREFULL WITH THE NEW CONSTANTS INDEX, pmin(5) pmax(6) qmin(7) qmax(8)
-        pfs(i) = fixGen2Normal_edit(gen2shunts_sol2(pfs(i)));
+        pfs{i}.order.bus.e2i= order_save;
+        pfs{i}.indexMap=mpcOPF.indexMap;
+        pfs{i}.comp=mpcOPF_or.comp;
+        pfs{i}.bus=[pfs{i}.bus mpcOPF_or.bus(:,PD) mpcOPF_or.bus(:,QD)];    %BE CAREFULL WITH THE NEW CONSTANTS INDEX, PD(7) QD(8)
+        pfs{i}.gen=[pfs{i}.gen mpcOPF_or.gen(:,PMIN) mpcOPF_or.gen(:,PMAX) mpcOPF_or.gen(:,QMIN) mpcOPF_or.gen(:,QMAX)]; %BE CAREFULL WITH THE NEW CONSTANTS INDEX, pmin(5) pmax(6) qmin(7) qmax(8)
+        pfs{i} = fixGen2Normal_edit(gen2shunts_sol2(pfs{i}));
 
     end
 end
 create_solution2(pfs,contingencies,fixGen2Normal(gen2shunts(mpcOPF)));
 end
-
-
